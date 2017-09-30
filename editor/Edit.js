@@ -2,24 +2,28 @@
  * Created by zhanglei on 2017/5/23.
  */
 import React, { Component, PropTypes } from 'react';
-import { Icon,Modal } from 'antd';
-import {circleFunction,myMessage} from '../modelCommon/main';
+import { Icon,Modal,message } from 'antd';
 const ContentEditable = require("react-contenteditable");
 import './edit.less'
-class Editor extends Component {
+export default class Editor extends Component {
     static propTypes = {
         className: PropTypes.string,
+        value:PropTypes.string,
     };
     constructor(props){
         super(props);
-        circleFunction(this,[
-            'inputTextChange','onchangefile','onpaste','ondrop','onParseOrDrop','faceClick','showFace','onkeyup'
-        ]);
+        ['inputTextChange','onchangefile','onpaste','ondrop','onParseOrDrop','onkeyup'].map(item=>this[item]=this[item].bind(this));
         this.state={
-            value:null,tableData:[],
-            linkModel:false,visible:false,
-            isColor:false,myDisabled:false,isEdit:true,isFace:false,
-            isBackground:false,linkValue:null,
+            value:null,
+            tableData:[],
+            linkModel:false,
+            visible:false,
+            isColor:false,
+            myDisabled:false,
+            isEdit:true,
+            isFace:false,
+            isBackground:false,
+            linkValue:null,
             editStatus:[
                 {label:'加粗',value:'bold',icon:'zitijiacu'},
                 {label:'斜体',value:'italic',icon:'zitixieti'},
@@ -41,113 +45,6 @@ class Editor extends Component {
                 '#710303','#989805','#989805','#059C05','rgb(9, 138, 152)','blue','#A020F0', 'rgb(76, 75, 75)',
                 '#5D0404',' #757504','#757504','green','rgb(2, 99, 109)','blue','#A020F0', '#000','rgb(56, 2, 2)'
             ],
-            face:[
-                {title:"微笑",status:false,class:"face qqface0"},
-                {title:"撇嘴",status:false,class:"face qqface1"},
-                {title:"色",status:false,class:"face qqface2"},
-                {title:"发呆",status:false,class:"face qqface3"},
-                {title:"得意",status:false,class:"face qqface4"},
-                {title:"流泪",status:false,class:"face qqface5"},
-                {title:"害羞",status:false,class:"face qqface6"},
-                {title:"闭嘴",status:false,class:"face qqface7"},
-                {title:"睡",status:false,class:"face qqface8"},
-                {title:"大哭",status:false,class:"face qqface9"},
-                {title:"尴尬",status:false,class:"face qqface10"},
-                {title:"发怒",status:false,class:"face qqface11"},
-                {title:"调皮",status:false,class:"face qqface12"},
-                {title:"呲牙",status:false,class:"face qqface13"},
-                {title:"惊讶",status:false,class:"face qqface14"},
-                {title:"难过",status:false,class:"face qqface15"},
-                {title:"酷",status:false,class:"face qqface16"},
-                {title:"冷汗",status:false,class:"face qqface17"},
-                {title:"抓狂",status:false,class:"face qqface18"},
-                {title:"吐",status:false,class:"face qqface19"},
-                {title:"偷笑",status:false,class:"face qqface20"},
-                {title:"愉快",status:false,class:"face qqface21"},
-                {title:"白眼",status:false,class:"face qqface22"},
-                {title:"傲慢",status:false,class:"face qqface23"},
-                {title:"饥饿",status:false,class:"face qqface24"},
-                {title:"困",status:false,class:"face qqface25"},
-                {title:"惊恐",status:false,class:"face qqface26"},
-                {title:"流汗",status:false,class:"face qqface27"},
-                {title:"憨笑",status:false,class:"face qqface28"},
-                {title:"悠闲",status:false,class:"face qqface29"},
-                {title:"奋斗",status:false,class:"face qqface30"},
-                {title:"咒骂",status:false,class:"face qqface31"},
-                {title:"疑问",status:false,class:"face qqface32"},
-                {title:"嘘",status:false,class:"face qqface33"},
-                {title:"晕",status:false,class:"face qqface34"},
-                {title:"疯了",status:false,class:"face qqface35"},
-                {title:"衰",status:false,class:"face qqface36"},
-                {title:"骷髅",status:false,class:"face qqface37"},
-                {title:"敲打",status:false,class:"face qqface38"},
-                {title:"再见",status:false,class:"face qqface39"},
-                {title:"擦汗",status:false,class:"face qqface40"},
-                {title:"抠鼻",status:false,class:"face qqface41"},
-                {title:"鼓掌",status:false,class:"face qqface42"},
-                {title:"糗大了",status:false,class:"face qqface43"},
-                {title:"坏笑",status:false,class:"face qqface44"},
-                {title:"左哼哼",status:false,class:"face qqface45"},
-                {title:"右哼哼",status:false,class:"face qqface46"},
-                {title:"哈欠",status:false,class:"face qqface47"},
-                {title:"鄙视",status:false,class:"face qqface48"},
-                {title:"委屈",status:false,class:"face qqface49"},
-                {title:"快哭了",status:false,class:"face qqface50"},
-                {title:"阴险",status:false,class:"face qqface51"},
-                {title:"亲亲",status:false,class:"face qqface52"},
-                {title:"吓",status:false,class:"face qqface53"},
-                {title:"可怜",status:false,class:"face qqface54"},
-                {title:"菜刀",status:false,class:"face qqface55"},
-                {title:"西瓜",status:false,class:"face qqface56"},
-                {title:"啤酒",status:false,class:"face qqface57"},
-                {title:"篮球",status:false,class:"face qqface58"},
-                {title:"乒乓",status:false,class:"face qqface59"},
-                {title:"咖啡",status:false,class:"face qqface60"},
-                {title:"饭",status:false,class:"face qqface61"},
-                {title:"猪头",status:false,class:"face qqface62"},
-                {title:"玫瑰",status:false,class:"face qqface63"},
-                {title:"凋谢",status:false,class:"face qqface64"},
-                {title:"嘴唇",status:false,class:"face qqface65"},
-                {title:"爱心",status:false,class:"face qqface66"},
-                {title:"心碎",status:false,class:"face qqface67"},
-                {title:"蛋糕",status:false,class:"face qqface68"},
-                {title:"闪电",status:false,class:"face qqface69"},
-                {title:"炸弹",status:false,class:"face qqface70"},
-                {title:"刀",status:false,class:"face qqface71"},
-                {title:"足球",status:false,class:"face qqface72"},
-                {title:"瓢虫",status:false,class:"face qqface73"},
-                {title:"便便",status:false,class:"face qqface74"},
-                {title:"月亮",status:false,class:"face qqface75"},
-                {title:"太阳",status:false,class:"face qqface76"},
-                {title:"礼物",status:false,class:"face qqface77"},
-                {title:"拥抱",status:false,class:"face qqface78"},
-                {title:"强",status:false,class:"face qqface79"},
-                {title:"弱",status:false,class:"face qqface80"},
-                {title:"握手",status:false,class:"face qqface81"},
-                {title:"胜利",status:false,class:"face qqface82"},
-                {title:"抱拳",status:false,class:"face qqface83"},
-                {title:"勾引",status:false,class:"face qqface84"},
-                {title:"拳头",status:false,class:"face qqface85"},
-                {title:"差劲",status:false,class:"face qqface86"},
-                {title:"爱你",status:false,class:"face qqface87"},
-                {title:"NO",status:false,class:"face qqface88"},
-                {title:"OK",status:false,class:"face qqface89"},
-                {title:"爱情",status:false,class:"face qqface90"},
-                {title:"飞吻",status:false,class:"face qqface91"},
-                {title:"跳跳",status:false,class:"face qqface92"},
-                {title:"发抖",status:false,class:"face qqface93"},
-                {title:"怄火",status:false,class:"face qqface94"},
-                {title:"转圈",status:false,class:"face qqface95"},
-                {title:"磕头",status:false,class:"face qqface96"},
-                {title:"回头",status:false,class:"face qqface97"},
-                {title:"跳绳",status:false,class:"face qqface98"},
-                {title:"投降",status:false,class:"face qqface99"},
-                {title:"激动",status:false,class:"face qqface100"},
-                {title:"乱舞",status:false,class:"face qqface101"},
-                {title:"献吻",status:false,class:"face qqface102"},
-                {title:"左太极",status:false,class:"face qqface103"},
-                {title:"右太极",status:false,class:"face qqface104"}
-            ]
         }
     };
     componentDidMount(){
@@ -160,24 +57,28 @@ class Editor extends Component {
     }
     //全局取消隐藏颜色框
     documentClick=(e)=>{
-        let en = e.srcElement||e.target;
-        const name = '.color-content';
-        while(en){
-            if(en.className&&en.className === name.replace('.','')){
-                return;
+        const {isColor,isBackground} = this.state;
+        if(isColor||isBackground){
+            let en = e.srcElement||e.target;
+            const name = '.color-content';
+            while(en){
+                if(en.className&&en.className === name.replace('.','')){
+                    return;
+                }
+                en = en.parentNode;
             }
-            en = en.parentNode;
+            this.setState({isColor:false,isBackground:false});
         }
-        this.setState({isColor:false,isBackground:false});
     };
     //卸载颜色框
     componentWillUnmount(){
         document.removeEventListener('click',this.documentClick)
     }
-    // onchange=(i)=>{
-    //     this.setState({value:this[i].innerHTML})
-    // };
-    //粘贴
+    /*
+     * <粘贴功能>
+     * @param onParseOrDrop 通用方法
+     *
+     * */
     onpaste=(e)=>{
         let cbd = e.clipboardData;
         let ua = window.navigator.userAgent;
@@ -191,7 +92,11 @@ class Editor extends Component {
         }
         this.onParseOrDrop(cbd,e);
     };
-    //拖拽
+    /*
+    * <拖拽功能>
+    * @param onParseOrDrop 通用方法
+    *
+    * */
     ondrop=(e)=>{
         e.preventDefault();
         let cbd = e.dataTransfer;
@@ -218,7 +123,7 @@ class Editor extends Component {
         });
         const arr = myArray.some((u)=>{
             if(u.kind === 'file'&&u.type!=='image/jpeg'&&u.type!=='image/png'){
-                myMessage('error','仅支持PNG或者JPG的图片格式上传');
+                message.error('仅支持PNG或者JPG的图片格式上传');
                 return !1
             }
             return u.kind === 'file'&&(u.type==='image/jpeg'||u.type==='image/png')
@@ -263,7 +168,7 @@ class Editor extends Component {
         const arr = e.target.files[0].name.split('.');
         const mode = arr[arr.length - 1];
         if(mode !== 'jpg'&&mode !== 'png'&&mode !== 'jpeg'){
-            myMessage('error','仅支持PNG或者JPG的图片格式上传！');
+            message.error('仅支持PNG或者JPG的图片格式上传');
             return;
         }
         const imgs = new Image();
@@ -283,7 +188,6 @@ class Editor extends Component {
         imgs.style.borderRadius = '3px';
         imgs.style.maxWidth = '500px';
         this.refs['inputText'].htmlEl.appendChild(imgs);
-        // this.refs['inputText'].focus();
     };
     //链接地址
     handleClick=(v,item)=>{
@@ -340,8 +244,6 @@ class Editor extends Component {
     //点击HTML
     insetOlTable=(e)=>{
         e.preventDefault();
-        //document.execCommand('InsertOrderedList');
-        //document.execCommand('InsertUnorderedList');
         const {isEdit} = this.state;
         let html =null;
         if(isEdit){
@@ -389,30 +291,6 @@ class Editor extends Component {
             onChange(html);
         }
     }
-    //表情
-    mapFaceToData=()=>{
-        const {face} = this.state;
-        return face.map(item=>{
-            return <div key={item.title} title={item.title} onClick={this.faceClick} contentEditable={item.status} className={item.class}>
-            </div>
-        });
-    };
-    //点击单个表情
-    faceClick(e){
-        e.preventDefault();
-        this.refs['inputText'].htmlEl.appendChild(e.target);
-        const html = this.refs['inputText'].htmlEl.innerHTML;
-        const {onChange} = this.props;
-        if(onChange){
-            onChange(html);
-        }
-        this.setState({isFace:false})
-    }
-    //弹出表情窗
-    showFace(e){
-        e.preventDefault();
-        this.setState({isFace:true});
-    }
     //键盘事件
     onkeyup(e){
         e.preventDefault();
@@ -451,10 +329,6 @@ class Editor extends Component {
                 {
                     !('disabled' in this.props)&&
                     <div id="editor-toolbar" className="clearfix">
-                        <button title="表情" onClick={this.showFace}><Icon type="smile-o"/></button>
-                        {
-                            isFace&&<div className="qq_face">{this.mapFaceToData()}</div>
-                        }
                         {!!editStatus&&this.mapEditStatus(editStatus)}
                         <div className="color-content">
                             <button className={!!myDisabled?'pointerEvent':'pointerEvent1'} title="字体颜色" onClick={this.textColor}><Icon type="zitiyanse"/></button>
@@ -529,4 +403,3 @@ class Editor extends Component {
         );
     }
 }
-export default Editor;
