@@ -3,16 +3,17 @@
  */
 import React, { Component, PropTypes } from 'react';
 import { Icon,Modal,message } from 'antd';
-const ContentEditable = require("react-contenteditable");
+import ContentEditable from 'react-contenteditable'
 import './edit.less'
 export default class Editor extends Component {
     static propTypes = {
         className: PropTypes.string,
         value:PropTypes.string,
+        editColor:PropTypes.string,
     };
     constructor(props){
         super(props);
-        ['inputTextChange','onchangefile','onpaste','ondrop','onParseOrDrop','onkeyup'].map(item=>this[item]=this[item].bind(this));
+        ['inputTextChange','onchangefile','onpaste','ondrop','onParseOrDrop'].map(item=>this[item]=this[item].bind(this));
         this.state={
             value:null,
             tableData:[],
@@ -291,15 +292,6 @@ export default class Editor extends Component {
             onChange(html);
         }
     }
-    //键盘事件
-    onkeyup(e){
-        e.preventDefault();
-        const {onChange} = this.props;
-        const html = this.refs['inputText'].htmlEl.innerHTML;
-        if(e.keyCode === 8&&onChange){
-            onChange(html)
-        }
-    }
     render() {
         const {editStatus,isColor,isBackground,isEdit,visible,colorData,fontSizeData,myDisabled,isFace} = this.state;
         const mapColor = (value)=>{
@@ -362,12 +354,7 @@ export default class Editor extends Component {
                         <input name="male" id="male" type="file" value={this.state.filevalue} onChange={this.onchangefile}/>
                     </div>
                 }
-                <div className="inputText" style={{
-                    position:'relative',
-                    overflow:'auto',
-                    borderTop: '1px solid #B7B7B7',
-                    border:this.props.editColor
-                }}>
+                <div className="inputText" style={{border:this.props.editColor}}>
                     {
                         !('disabled' in this.props)?
                             <ContentEditable
